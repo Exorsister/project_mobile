@@ -1,6 +1,7 @@
 const RB = ReactBootstrap;
 const { Alert, Card, Button, Table } = ReactBootstrap;
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyBLDez3MsdYRnoZGXr1kvBefYfV5MGzsFM",
     authDomain: "projectmobile-797e9.firebaseapp.com",
@@ -9,10 +10,11 @@ const firebaseConfig = {
     messagingSenderId: "512174301237",
     appId: "1:512174301237:web:1a624082ce2f8345cfd17c",
     measurementId: "G-51WW5SW7BN"
-  };
+};
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const auth = firebase.auth();
 
 class App extends React.Component {
 
@@ -35,6 +37,7 @@ class App extends React.Component {
         stdemail: "",
         stdsection: "",
         showMessage: false,
+        isLoggedIn: false,
     }
 
     readData() {
@@ -97,14 +100,39 @@ class App extends React.Component {
         }
     }
 
-    render() {
-        // var stext = JSON.stringify(this.state.students);  
+    loginWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                // เข้าสู่ระบบสำเร็จ
+                console.log("Login successful", result);
+                // ดึงข้อมูลผู้ใช้
+                const user = result.user;
+                // ตั้งค่า isLoggedIn เป็น true เมื่อเข้าสู่ระบบสำเร็จ
+                this.setState({ isLoggedIn: true });
+                // แสดงอีเมลของผู้ใช้
+                console.log("User email:", user.email);
+                // อาจทำการ setState เพื่อเก็บข้อมูลผู้ใช้ไว้สำหรับการแสดงในแอพ
+                // ตัวอย่างเช่น
+                this.setState({ userEmail: user.email });
+            })
+            .catch((error) => {
+                // เกิดข้อผิดพลาดในการเข้าสู่ระบบ
+                console.error("Login error", error);
+            });
+    }
+
+    render() { 
         return (
             <Card>
                 <Card.Header>{this.title}</Card.Header>
                 <Card.Body>
+                    {!this.state.isLoggedIn && (
+                        <Button onClick={() => this.loginWithGoogle()}>เข้าสู่ระบบด้วย Google</Button>
+                    )}
                     <Button onClick={() => this.readData()}>Read Data</Button>
                     <Button onClick={() => this.autoRead()}>Auto Read</Button>
+                    {this.state.userEmail && <div>User Email: {this.state.userEmail}</div>}
                     <div>
                         <StudentTable data={this.state.students} app={this} />
                     </div>
@@ -116,7 +144,7 @@ class App extends React.Component {
                     <TextInput label="Email" app={this} value="stdemail" style={{ width: 150 }} />
                     <TextInput label="Phone" app={this} value="stdsection" style={{ width: 120 }} />
                     <Button onClick={() => this.insertData()}>Save</Button>
-                    
+
                     {/* แสดงข้อความเมื่อ showMessage เป็น true */}
                     {this.state.showMessage && <Alert variant="success">บันทึกสำเร็จ!</Alert>}
                 </Card.Footer>
