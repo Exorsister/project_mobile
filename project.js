@@ -30,12 +30,10 @@ class App extends React.Component {
     state = {
         scene: 0,
         students: [],
-        stdid: "",
-        stdtitle: "",
-        stdfname: "",
-        stdlname: "",
+        id: "",
+        stdname: "",
         stdemail: "",
-        stdphone: "",
+        stdsection: "",
         showMessage: false,
     }
 
@@ -71,11 +69,9 @@ class App extends React.Component {
 
         this.setState({
             stdid: "",
-            stdtitle: "",
-            stdfname: "",
-            stdlname: "",
+            stdname: "",
             stdemail: "",
-            stdphone: "",
+            stdsection: "",
             showMessage: true,
         });
 
@@ -88,12 +84,10 @@ class App extends React.Component {
 
     edit(std) {
         this.setState({
-            stdid: std.id,
-            stdtitle: std.title,
-            stdfname: std.fname,
-            stdlname: std.lname,
-            stdemail: std.email,
-            stdphone: std.phone,
+            stdid: std.stdid,
+            stdname: std.stdname,
+            stdemail: std.stdemail,
+            stdsection: std.stdsection,
         })
     }
 
@@ -118,11 +112,9 @@ class App extends React.Component {
                 <Card.Footer>
                     <b>เพิ่ม/แก้ไขข้อมูล นักศึกษา :</b><br />
                     <TextInput label="ID" app={this} value="stdid" style={{ width: 120 }} />
-                    <TextInput label="คำนำหน้า" app={this} value="stdtitle" style={{ width: 100 }} />
-                    <TextInput label="ชื่อ" app={this} value="stdfname" style={{ width: 120 }} />
-                    <TextInput label="สกุล" app={this} value="stdlname" style={{ width: 120 }} />
+                    <TextInput label="ชื่อ" app={this} value="stdname" style={{ width: 120 }} />
                     <TextInput label="Email" app={this} value="stdemail" style={{ width: 150 }} />
-                    <TextInput label="Phone" app={this} value="stdphone" style={{ width: 120 }} />
+                    <TextInput label="Phone" app={this} value="stdsection" style={{ width: 120 }} />
                     <Button onClick={() => this.insertData()}>Save</Button>
                     
                     {/* แสดงข้อความเมื่อ showMessage เป็น true */}
@@ -140,11 +132,9 @@ function StudentTable({ data, app }) {
         rows.push(
             <tr key={s.id}>
                 <td>{s.id}</td>
-                <td>{s.title}</td>
-                <td>{s.fname}</td>
-                <td>{s.lname}</td>
+                <td>{s.name}</td>
                 <td>{s.email}</td>
-                <td>{s.phone}</td>
+                <td>{s.section}</td>
                 <td><EditButton std={s} app={app} /></td>
                 <td><DeleteButton std={s} app={app} /></td>
             </tr>
@@ -155,11 +145,9 @@ function StudentTable({ data, app }) {
             <thead>
                 <tr>
                     <th>รหัส</th>
-                    <th>คำนำหน้า</th>
                     <th>ชื่อ</th>
-                    <th>สกุล</th>
                     <th>email</th>
-                    <th>เบอร์โทร</th>
+                    <th>section</th>
                     <th></th>
                     <th></th>
                 </tr>
