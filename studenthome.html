@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Home</title>
+    <!-- เพิ่มลิงก์ไปยังไฟล์ Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"></script>
+</head>
+
+<body>
+    <!-- เนื้อหาของหน้า student home ต่อจากนี้ -->
+    <h1>Welcome to Student Home</h1>
+    <!-- เพิ่มปุ่ม Logout -->
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        // ตรวจสอบการเข้าถึงของ Firebase SDK หลังจากโหลดหน้า
+        window.onload = function () {
+            // กำหนดค่า Firebase SDK
+            const firebaseConfig = {
+            apiKey: "AIzaSyBLDez3MsdYRnoZGXr1kvBefYfV5MGzsFM",
+            authDomain: "projectmobile-797e9.firebaseapp.com",
+            projectId: "projectmobile-797e9",
+            storageBucket: "projectmobile-797e9.appspot.com",
+            messagingSenderId: "512174301237",
+            appId: "1:512174301237:web:1a624082ce2f8345cfd17c",
+            measurementId: "G-51WW5SW7BN"
+        };
+            // กำหนดค่า Firebase SDK และใช้งาน Firebase
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // Function to logout from Google
+        function logout() {
+            firebase.auth().signOut().then(function() {
+                // Sign-out successful.
+                alert('Logged out successfully!');
+                window.location.href = 'index.html'; // Redirect to index.html after logout
+            }).catch(function(error) {
+                // An error happened.
+                alert('Error logging out!');
+            });
+        }
+    </script>
+</body>
+
+</html>

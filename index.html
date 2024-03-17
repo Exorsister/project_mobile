@@ -57,7 +57,6 @@
                         </table>
                     </v-card-text>
                     <v-card-actions>
-                        <!-- <v-btn @click="readData()">Read Data (get)</v-btn> -->
                         <v-btn @click="autoRead()">ดูรายชื่อนักเรียน</v-btn>
                         <v-btn @click="addData()">Add Data</v-btn>
                         <v-btn @click="autoReadteacher()">รายชื่อครู</v-btn>
@@ -94,11 +93,10 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const vuetify = Vuetify.createVuetify();
         const app = Vue.createApp({
             data() {
                 return {
-                    title: "Project Firebase ด้วย VueJS",
+                    title: "Project Firebase with VueJS",
                     footer: "",
                     students: [],
                     teacher: [],
@@ -113,6 +111,10 @@
                 firebase.auth().onAuthStateChanged((user) => {
                     if (user) {
                         this.user = user.toJSON();
+                        if (user.email.endsWith('@kkumail.com')) {
+                            // Redirect to studenthome.html
+                            window.location.href = 'studenthome.html';
+                        }
                     } else {
                         this.user = null;
                     }
@@ -120,17 +122,6 @@
             },
 
             methods: {
-                // readData() {
-                //     db.collection("students")
-                //         .get()
-                //         .then((querySnapshot) => {
-                //             var stdlist = [];
-                //             querySnapshot.forEach((doc) => {
-                //                 stdlist.push({ id: doc.id, ...doc.data() });
-                //             });
-                //             this.students = stdlist;
-                //         });
-                // },
                 autoRead() {
                     db.collection("students").onSnapshot((querySnapshot) => {
                         var stdlist = [];
@@ -178,19 +169,6 @@
                         firebase.auth().signOut();
                     }
                 },
-                getstudent(email) {
-                    db.collection("students")
-                        .where("email", "==", email)
-                        .limit(1)
-                        .get()
-                        .then(
-                            (querySnapshot) => {
-                                querySnapshot.forEach((doc) => {
-                                    this.ustudent = { id: doc.id, ...doc.data() };
-                                });
-                            }
-                        );
-                },
                 clearData() {
                     this.editstd = {};
                     this.editmode = 0;
@@ -198,7 +176,7 @@
             },
         });
 
-        app.use(vuetify).mount("#app");
+        app.mount("#app");
     </script>
 </body>
 
