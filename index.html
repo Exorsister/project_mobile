@@ -57,8 +57,8 @@
                         </table>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn @click="readData()">Read Data (get)</v-btn>
-                        <v-btn @click="autoRead()">Auto Read (onSnapshot)</v-btn>
+                        <!-- <v-btn @click="readData()">Read Data (get)</v-btn> -->
+                        <v-btn @click="autoRead()">ดูรายชื่อนักเรียน</v-btn>
                         <v-btn @click="addData()">Add Data</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -118,17 +118,17 @@
             },
 
             methods: {
-                readData() {
-                    db.collection("students")
-                        .get()
-                        .then((querySnapshot) => {
-                            var stdlist = [];
-                            querySnapshot.forEach((doc) => {
-                                stdlist.push({ id: doc.id, ...doc.data() });
-                            });
-                            this.students = stdlist;
-                        });
-                },
+                // readData() {
+                //     db.collection("students")
+                //         .get()
+                //         .then((querySnapshot) => {
+                //             var stdlist = [];
+                //             querySnapshot.forEach((doc) => {
+                //                 stdlist.push({ id: doc.id, ...doc.data() });
+                //             });
+                //             this.students = stdlist;
+                //         });
+                // },
                 autoRead() {
                     db.collection("students").onSnapshot((querySnapshot) => {
                         var stdlist = [];
