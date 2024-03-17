@@ -60,6 +60,7 @@
                         <!-- <v-btn @click="readData()">Read Data (get)</v-btn> -->
                         <v-btn @click="autoRead()">ดูรายชื่อนักเรียน</v-btn>
                         <v-btn @click="addData()">Add Data</v-btn>
+                        <v-btn @click="autoReadteacher()">รายชื่อครู</v-btn>
                     </v-card-actions>
                 </v-card>
                 <v-card v-if="editmode">
@@ -100,6 +101,7 @@
                     title: "Project Firebase ด้วย VueJS",
                     footer: "",
                     students: [],
+                    teacher: [],
                     editstd: {},
                     editmode: 0,
                     user: null,
@@ -138,6 +140,16 @@
                         this.students = stdlist;
                     });
                 },
+                autoReadteacher() {
+                    db.collection("teacher").onSnapshot((querySnapshot) => {
+                        var teacherlist = [];
+                        querySnapshot.forEach((doc) => {
+                            teacherlist.push({ id: doc.id, ...doc.data() });
+                        });
+                        this.teacher = teacherlist;
+                    });
+                },
+
                 edit(std) {
                     this.editstd = std;
                     this.editmode = "edit";
